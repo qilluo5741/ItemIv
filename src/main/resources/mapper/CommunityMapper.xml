@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper中定义的是mybatis对某些业务的sql语句 -->
+<mapper namespace="com.sharebo.mapper.CommunityMapper">
+	<cache readOnly="true" size="500" flushInterval="120000" eviction="LRU"/>
+	<!-- 模糊分页查询 -->
+	<select id="setCommunitylistAll" parameterType="hashmap" resultType="com.sharebo.entity.dto.CommunityDto">
+		select c.commId,c.commVal,c.createtime,c.commName from community c where c.commName like '%${commName}%' ORDER BY createtime desc limit #{pageBegin},#{pageSize}
+	</select>
+	<!--查询总条数-->
+	<select id="selectCommunitylistCount" resultType="Integer">
+		select count(1) from community where commName like '%${commName}%'
+	</select>
+	<select id="selectCommunitylistCounts" resultType="Integer">
+		select count(1) from community
+	</select>
+	<!-- 查询小区信息 -->
+	<select id="getCommunityInfo" parameterType="hashmap" resultType="com.sharebo.entity.dto.CommunityDto">
+	   SELECT commId,commVal,createtime,commName FROM community WHERE commId in(${commId}) ORDER BY createtime desc limit #{pageBegin},#{pageSize} 
+	</select>
+	<!-- 小区总数 -->
+	<select id="getCommunityCount" resultType="Integer">
+	   select count(1) from community where commId in (${commId})
+	</select>
+	<select id="selectCommIdByUserId" resultType="string">
+	   SELECT co.commId FROM community co,usercomm uco WHERE co.commId=uco.commId AND uco.userId=#{userId}
+	</select>
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper中定义的是mybatis对某些业务的sql语句 -->
+<mapper namespace="com.sharebo.mapper.WhiteListMapper">
+	<cache readOnly="true" size="500" flushInterval="120000" eviction="LRU"/>
+	<!-- 通过userId查询物业所关联的小区名字和小区标识 -->
+	<select id="getCommIdByUserId" resultType="com.sharebo.entity.dto.CommunityDto">
+	  SELECT c.commVal,c.commName FROM usercomm uc,community c WHERE uc.commId=c.commId AND uc.userId=#{userId}
+	</select>
+</mapper>

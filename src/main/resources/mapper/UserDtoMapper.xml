@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper中定义的是mybatis对某些业务的sql语句 -->
+<mapper namespace="com.sharebo.mapper.UserDtoMapper">
+	<cache readOnly="true" size="500" flushInterval="120000" eviction="LRU"/>
+	<!-- 创建用户 -->
+	<insert id="addUser" parameterType="com.sharebo.entity.dto.UserDto">
+		insert into user(userid,userAccount,userPassword,createTime,isProperty,isdelete) values(UUID_SHORT(),#{userAccount},#{userPassword},NOW(),1,0);
+	</insert>
+	<!--注销用户-->
+	<update id="updatecancellationUser" parameterType="com.sharebo.entity.dto.UserDto">
+		update user set isdelete=1 where userid=#{userid}
+	</update>
+	<!--修改用户-->
+	<update id="updateModifyUser" parameterType="com.sharebo.entity.dto.UserDto">
+		update user set userAccount=#{userAccount} where userid=#{userid}
+	</update>
+	<!-- 验证是否账户 -->
+	<select id="valserialuserAccountIsExists" resultType="int">
+		select count(1) from user where userAccount=#{userAccount}
+	</select>
+	<!-- 创建角色 -->
+	<insert id="addRoleInfo" parameterType="string">
+		insert into role(roleid,rolename,createTime,userId,isdelete) values(UUID_SHORT(),'收费员/保安',NOW(),#{userid},0)
+	</insert>
+	<select id="seleclroleByuserId"  resultType="String">
+	    select userid from user where userAccount=#{userAccount}
+	</select>
+	<!-- 分页查询用户 -->
+	<select id="getselectUserlist" parameterType="hashmap" resultType="com.sharebo.entity.dto.UserDto">
+		SELECT u.userId,u.userAccount,u.userPassword,u.createTime,u.isProperty from user u where isProperty=1 ORDER BY createTime DESC LIMIT #{pageBegin},#{pageSize}
+	</select>
+	<!--查询总条数-->
+	<select id="selectUserlistCount" resultType="Integer">
+		SELECT count(1) FROM user WHERE isProperty=1
+	</select>
+	<select id="valserialuserAccountandoldpasswordIsExists" resultType="string">
+		select userid from user where userAccount=#{userAccount} and userPassword=#{userPassword}
+	</select>
+	<update id="updateModifyuserPwdUser" parameterType="com.sharebo.entity.dto.UserDto">
+		update user set userPassword=#{userPassword} where userid=#{userid}
+	</update>
+</mapper>

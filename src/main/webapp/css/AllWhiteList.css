@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+a:link{
+    color:black;    <!--未点击的超链接显示黑色--->
+
+}
+a:hover{
+    color:purple; <!----当鼠标指向超链接时变成紫色----->
+
+}
+a:visited{
+    color:red;  <!----当超链接被访问过后变成红色----->
+}

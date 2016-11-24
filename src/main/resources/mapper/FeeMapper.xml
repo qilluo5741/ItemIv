@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper中定义的是mybatis对某些业务的sql语句 -->
+<mapper namespace="com.sharebo.mapper.FeeMapper">
+	<cache readOnly="true" size="500" flushInterval="120000" eviction="LRU"/>
+	<!-- 通过用户Id查询最终用户Id -->
+	<select id="getUserId" resultType="string">
+		select parentUserId from user where  userId=#{userId}
+	</select>
+	<!-- 通过用户id查询全部小区 -->
+	<select id="getAllComm" resultType="com.sharebo.entity.dto.CommunityDto">
+		select commId,commVal,commName from community where commId in(select commId from usercomm where userId=#{userId})
+	</select>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper中定义的是mybatis对某些业务的sql语句 -->
+<mapper namespace="com.sharebo.mapper.HarmoniouMapper">
+	<cache readOnly="true" size="500" flushInterval="120000" eviction="LRU"/>
+	<!-- 模糊分页查询 -->
+	<select id="getHarmonioulistAll" parameterType="hashmap" resultType="com.sharebo.entity.dto.Harmoniou">
+		select harmonid,ordernumber,approachtime,playingtime,minutes,platenumber,whiteuser,chargemoney,standard,receivable,ispay,paymentperiod,maxmoney from harmoniou ORDER BY paymentperiod desc limit #{pageBegin},#{pageSize}
+	</select>
+	<select id="selectHarmonioulistCount" resultType="int">
+		select count(*) from harmoniou
+	</select>
+</mapper>
